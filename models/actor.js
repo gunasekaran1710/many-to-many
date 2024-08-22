@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const actorSchema = new Schema({
-    movieName:[String],
+    movieName:[{ type: Schema.Types.ObjectId, ref: 'Movie' }],
     actorName:String,
-    directorName:[String],
-    movieType:[String]
+    directorName:[{ type: Schema.Types.ObjectId, ref: 'Director' }],
+    movieType:[{ type: Schema.Types.ObjectId, ref: 'movieType' }],
 
 });
 

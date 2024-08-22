@@ -122,7 +122,7 @@ async function viewActor(req,res){
                 $lookup: {
                     from: "movies",
                     localField: 'movieName',
-                    foreignField: 'movieName',
+                    foreignField: '_id',
                     as: "movieDetails"
                 }
             },
@@ -130,7 +130,7 @@ async function viewActor(req,res){
                 $lookup:{
                     from:"directors",
                     localField:'directorName',
-                    foreignField:'directorName',
+                    foreignField:'_id',
                     as:"directorDetails"
                 }
             },
@@ -138,7 +138,7 @@ async function viewActor(req,res){
                 $lookup:{
                     from:"movietypes",
                     localField:'movieType',
-                    foreignField:'movieType',
+                    foreignField:'_id',
                     as:"movieTypeDetails"
                 }
             }
@@ -168,7 +168,7 @@ async function viewDirector(req,res){
                 $lookup: {
                     from: "movies",
                     localField: 'movieName',
-                    foreignField: 'movieName',
+                    foreignField: '_id',
                     as: "movieDetails"
                 }
             },
@@ -176,7 +176,7 @@ async function viewDirector(req,res){
                 $lookup:{
                     from:"actors",
                     localField:'actorName',
-                    foreignField:'actorName',
+                    foreignField:'_id',
                     as:"actorDetails"
                 }
             },
@@ -184,7 +184,7 @@ async function viewDirector(req,res){
                 $lookup:{
                     from:"movietypes",
                     localField:'movieType',
-                    foreignField:'movieType',
+                    foreignField:'_id',
                     as:"movieTypeDetails"
                 }
             }
@@ -214,7 +214,7 @@ async function viewmovieType(req,res){
                 $lookup: {
                     from: "movies",
                     localField: 'movieName',
-                    foreignField: 'movieName',
+                    foreignField: '_id',
                     as: "movieDetails"
                 }
             },
@@ -222,7 +222,7 @@ async function viewmovieType(req,res){
                 $lookup:{
                     from:"actors",
                     localField:'actorName',
-                    foreignField:'actorName',
+                    foreignField:'_id',
                     as:"actorDetails"
                 }
             },
@@ -230,7 +230,7 @@ async function viewmovieType(req,res){
                 $lookup:{
                     from:"directors",
                     localField:'directorName',
-                    foreignField:'directorName',
+                    foreignField:'_id',
                     as:"directorDetails"
                 }
             }
