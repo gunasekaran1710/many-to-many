@@ -1,0 +1,12 @@
+const express = require('express');
+const repository = require('../repository/userRepository');
+const router = express.Router();
+router.post('/createMovie',repository.createMovie);
+router.post('/createActor',repository.createActor);
+router.post('/createDirector',repository.createDirector);
+router.post('/createmovieType',repository.createmovieType);
+router.get('/viewMovie',repository.viewMovie);
+router.get('/viewActor',repository.viewActor);
+router.get('/viewDirector',repository.viewDirector);
+router.get('/viewmovieType',repository.viewmovieType);
+module.exports=router;
