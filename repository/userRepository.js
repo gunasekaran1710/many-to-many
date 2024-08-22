@@ -158,6 +158,7 @@ async function viewActor(req,res){
 async function viewDirector(req,res){
     try {
         const directorId = req.body._id;
+
         const objectId = new mongoose.Types.ObjectId(directorId);
 
         const directorDetails = await Director.aggregate([
@@ -187,14 +188,12 @@ async function viewDirector(req,res){
                     foreignField:'_id',
                     as:"movieTypeDetails"
                 }
-            }
+            },
         ]);
 
         if (directorDetails.length === 0) {
             return res.status(404).json({ error: 'director not found' });
         }
-
-        console.log('director Details:', directorDetails);
         res.status(200).json(directorDetails);
     } catch (error) {
         console.error('Error retrieving director details:', error);
@@ -205,25 +204,25 @@ async function viewmovieType(req,res){
     try {
         const movietypeId = req.body._id;
         const objectId = new mongoose.Types.ObjectId(movietypeId);
-
-        const movietypeDetails = await movieType.aggregate([
+        const page = parseInt(req.body.page) || 1;
+        const size = parseInt(req.body.size) || 2;
+        const totalCountResult = await Movie.aggregate([
+            { $match: { movieType: objectId } },
+            { $count: 'totalCount' }
+        ]);
+        const totalCount= totalCountResult[0].totalCount;
+        const numberOfBage=Math.ceil(totalCount/size);
+        const movietypeDetails = await Movie.aggregate([
             {
-                $match: { _id: objectId }
+                $match: { movieType: objectId }
             },
+
             {
                 $lookup: {
-                    from: "movies",
-                    localField: 'movieName',
+                    from: "actors",
+                    localField: 'actorName',
                     foreignField: '_id',
-                    as: "movieDetails"
-                }
-            },
-            {
-                $lookup:{
-                    from:"actors",
-                    localField:'actorName',
-                    foreignField:'_id',
-                    as:"actorDetails"
+                    as: "actorDetails"
                 }
             },
             {
@@ -233,15 +232,19 @@ async function viewmovieType(req,res){
                     foreignField:'_id',
                     as:"directorDetails"
                 }
+            },
+            {
+                $skip: (page - 1) * size
+            },
+            {
+                $limit: size
             }
         ]);
 
         if (movietypeDetails.length === 0) {
             return res.status(404).json({ error: 'movietype not found' });
         }
-
-        console.log('movietype Details:', movietypeDetails);
-        res.status(200).json(movietypeDetails);
+        res.status(200).json({message:"success","statusCode":"200","result":movietypeDetails,"totalCount":totalCount,"numberOfBages":numberOfBage,"currentPage":page,});
     } catch (error) {
         console.error('Error retrieving movietype details:', error);
         res.status(500).json({ error: 'Failed to retrieve movietype details' });
